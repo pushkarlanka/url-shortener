@@ -1,15 +1,18 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from config import Config
+from flask import render_template, redirect, url_for, request
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://pushkar:!lvdatabases@flask-db.cydhh6wmxzpc.us-west-2.rds.amazonaws.com:3306/flaskdb'
+config = Config()
+app.config['SQLALCHEMY_DATABASE_URI'] = config.get_db_url()
 
 app.debug = True
 db = SQLAlchemy(app)
 
 
-class UrlTable(db.Model):
+class UrlMap(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     short_url = db.Column(db.String(45), unique=True, nullable=False)
     long_url = db.Column(db.String(5000), nullable=False)
@@ -23,9 +26,21 @@ class UrlTable(db.Model):
 
 
 @app.route('/')
-def hello_world():
+def index():
     db.create_all()
-    return 'Hello World!'
+    # return redirect("http://www.google.com", code=302)
+    # return 'Hello World!'
+    # return render_template('add_link.html', name=name)
+    return render_template('add_link.html')
+
+
+@app.route('/post_link', methods=['POST'])
+def post_link():
+    urlmap = UrlMap(short_url='DD', long_url=request.form['long_link'])
+    db.session.add(urlmap)
+    db.session.commit()
+    return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run()

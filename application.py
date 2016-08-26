@@ -47,8 +47,14 @@ def post_link():
     short_url = UrlHash.get_base_k(db_id)
     print 'short_url', short_url
 
-    return redirect(url_for('index'))
+    return redirect(url_for('display_result', link=short_url))
+    # return render_template('add_link.html', short_url=short_url)
 
+
+@app.route('/result')
+def display_result():
+    return render_template('add_link.html', short_url=request.args['link'])
+    # return render_template('add_link.html', short_url=res)
 
 if __name__ == '__main__':
     app.run()

@@ -16,7 +16,7 @@
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for m in messages %}
-                <h1>{{ m }}</h1>
+                <a href="{{ m }}">{{ m }}</a>
             {% endfor %}
         {% endif %}
     {% endwith %}

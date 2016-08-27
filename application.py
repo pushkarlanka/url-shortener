@@ -40,6 +40,9 @@ def index():
 @app.route('/post_link', methods=['POST'])
 def post_link():
 
+    # TODO: Check that long_url is a valid URL
+    # TODO: Strip out the prefix http:// (or) https://
+
     db_entry = UrlDB(long_url=request.form['long_link'])
     db.session.add(db_entry)
     db.session.commit()

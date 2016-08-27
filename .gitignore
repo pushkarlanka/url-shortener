@@ -1,4 +1,3 @@
 config.py
-config.pyc
-hash_url.pyc
+*.pyc
 .idea/

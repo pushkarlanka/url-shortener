@@ -11,7 +11,15 @@
         <input type="submit">
     </form>
 
-    <h1>{{ short_url }}</h1>
+{#    <h1>{{ short_url }}</h1>#}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for m in messages %}
+                <h1>{{ m }}</h1>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
 </body>
 </html>

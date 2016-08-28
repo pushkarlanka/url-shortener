@@ -10,11 +10,10 @@ app = Flask(__name__)
 config = Config()
 app.config['SQLALCHEMY_DATABASE_URI'] = config.get_db_url()
 
-app.debug = True
 db = SQLAlchemy(app)
 
 # defined by me
-app.domain = None
+app.domain = "http://localhost:5000/"
 
 class UrlDB(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
@@ -30,8 +29,6 @@ class UrlDB(db.Model):
 @app.route('/')
 def index():
     db.create_all()
-    if app.domain is None:
-        app.domain = request.url
     # return redirect("http://www.google.com", code=302)
     # return render_template('add_link.html', name=name)
     return render_template('add_link.html')
@@ -41,9 +38,11 @@ def index():
 def post_link():
 
     # TODO: Check that long_url is a valid URL
-    # TODO: Strip out the prefix http:// (or) https://
 
-    db_entry = UrlDB(long_url=request.form['long_link'])
+    long_url = request.form['long_link']
+    long_url = long_url.strip("http://").strip("https://")
+
+    db_entry = UrlDB(long_url=long_url)
     db.session.add(db_entry)
     db.session.commit()
 
@@ -74,4 +73,4 @@ def short_to_long_url(short_url):
 if __name__ == '__main__':
     app.secret_key = 'private key'
 
-    app.run()
+    app.run(debug=True, threaded=True)

@@ -3,13 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <script src="{{ url_for('static', filename='jquery-3.1.0.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js')}}"></script>
+
 </head>
 <body>
-    <form method="post" action="post_link">
-        <label>Long link</label>
-        <input id="long_link" name="long_link" type="text">
-        <input type="submit">
-    </form>
+
+{# boostrap starts    #}
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Logo</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#about">ABOUT</a></li>
+            <li><a href="#services">SERVICES</a></li>
+            <li><a href="#portfolio">PORTFOLIO</a></li>
+            <li><a href="#pricing">PRICING</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <style>
+        .navbar {
+            margin-bottom: 0;
+            background-color: #f4511e;
+            z-index: 9999;
+            border: 0;
+            font-size: 12px !important;
+            line-height: 1.42857143 !important;
+            letter-spacing: 4px;
+            border-radius: 0;
+        }
+
+        .navbar li a, .navbar .navbar-brand {
+            color: #fff !important;
+        }
+
+        .navbar-nav li a:hover, .navbar-nav li.active a {
+            color: #f4511e !important;
+            background-color: #fff !important;
+        }
+
+        .navbar-default .navbar-toggle {
+            border-color: transparent;
+            color: #fff !important;
+        }
+    </style>
+
+    <style>
+        .jumbotron {
+            background-color: #3B5998;
+            color: #ffffff;
+        }
+    </style>
+
+    <div class="jumbotron text-center">
+
+        <h1>Your URL Hub.</h1>
+        <p>Shorten, broadcast, analyze, repeat.</p>
+
+        <form class="form-inline" method="post" action="post_link">
+            <input class="form-control" name="long_link" size="50" type="text" placeholder="Paste any link here" width="300px">
+            <input class="btn btn-primary" type="submit" value="SHORTEN" >
+        </form>
+
+    </div>
+
+
+{# bootsrap ends #}
+
+
 
 {#    <h1>{{ short_url }}</h1>#}
 

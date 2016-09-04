@@ -82,23 +82,35 @@
     </div>
 
 
+{#    <div class="alert alert-danger">#}
+{#        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>#}
+{#        <strong>Danger!</strong> Indicates a dangerous or potentially negative action.#}
+{#    </div>#}
+
 {# bootsrap ends #}
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for m in messages %}
                 <script>
-                    console.log("LOOK" + {{ m|tojson|safe }});
-                    // initialize local storage if NULL
-                    var data;
-                    if(localStorage.getItem('session_data') == null) {
-                        data = {'body': []};
+
+                    if(('{{ m }}').localeCompare('error') == 0) {
+                        console.log('INVALID URL');
                     } else {
-                        data = JSON.parse(localStorage.getItem('session_data'));
+                        console.log("LOOK" + {{ m|tojson|safe }});
+                        // initialize local storage if NULL
+                        var data;
+                        if(localStorage.getItem('session_data') == null) {
+                            data = {'body': []};
+                        } else {
+                            data = JSON.parse(localStorage.getItem('session_data'));
+                        }
+
+                        data['body'].push(JSON.parse({{ m|tojson|safe }}));
+                        localStorage.setItem('session_data', JSON.stringify(data));
                     }
 
-                    data['body'].push(JSON.parse({{ m|tojson|safe }}));
-                    localStorage.setItem('session_data', JSON.stringify(data));
+
                 </script>
             {% endfor %}
         {% endif %}
@@ -118,6 +130,7 @@
                     element.href = short_url;
                     element.text = short_url;
                     document.body.appendChild(element);
+                    document.body.appendChild(document.createElement('br'));
                 }
             }
         });

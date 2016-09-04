@@ -84,17 +84,44 @@
 
 {# bootsrap ends #}
 
-
-
-{#    <h1>{{ short_url }}</h1>#}
-
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for m in messages %}
-                <a href="{{ m }}">{{ m }}</a>
+                <script>
+                    console.log("LOOK" + {{ m|tojson|safe }});
+                    // initialize local storage if NULL
+                    var data;
+                    if(localStorage.getItem('session_data') == null) {
+                        data = {'body': []};
+                    } else {
+                        data = JSON.parse(localStorage.getItem('session_data'));
+                    }
+
+                    data['body'].push(JSON.parse({{ m|tojson|safe }}));
+                    localStorage.setItem('session_data', JSON.stringify(data));
+                </script>
             {% endfor %}
         {% endif %}
     {% endwith %}
+
+    <script>
+        $(document).ready(function() {
+
+            console.log("SESSION DATA: " +  localStorage.getItem('session_data'));
+            var data = JSON.parse(localStorage.getItem('session_data'));
+            if(data && data['body']) {
+                data = data['body'];
+                for(var i = 0; i < data.length; i++) {
+                    var short_url = data[i]['short_url'];
+
+                    var element = document.createElement('a');
+                    element.href = short_url;
+                    element.text = short_url;
+                    document.body.appendChild(element);
+                }
+            }
+        });
+    </script>
 
 </body>
 </html>

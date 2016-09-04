@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from config import Config
 from flask import render_template, redirect, url_for, request, flash
 from hash_url import UrlHash
-
+# from flask import json
+import json
 
 app = Flask(__name__)
 
@@ -28,7 +29,7 @@ class UrlDB(db.Model):
 
 @app.route('/')
 def index():
-    db.create_all()
+    # db.create_all()
     # return redirect("http://www.google.com", code=302)
     # return render_template('add_link.html', name=name)
     return render_template('add_link.html')
@@ -53,7 +54,9 @@ def post_link():
     print 'short_url', short_url
 
     # return redirect(url_for('display_result', link=short_url))
-    flash(app.domain + short_url)
+    # data = {'long_url': long_url, 'short_url': short_url}
+    data = {'short_url': app.domain + 'r/' + short_url}
+    flash(json.dumps(data))
     return redirect(url_for('index'))
 
 
@@ -63,7 +66,7 @@ def display_result():
     # return render_template('add_link.html', short_url=res)
 
 
-@app.route('/<short_url>')
+@app.route('/r/<short_url>')
 def short_to_long_url(short_url):
     db_id = UrlHash.get_base_10(short_url)
     obj = UrlDB.query.get(db_id)

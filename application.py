@@ -41,16 +41,21 @@ def index():
 def post_link():
 
     long_url = request.form['long_link']
-    long_url = long_url.strip("http://").strip("https://")
+    long_url = long_url.replace("http://", "").replace("https://", "").replace("www.", "")
 
     try:
         soup = BeautifulSoup(urllib2.urlopen("http://" + long_url))
         title = soup.title.string
-        print "Exists!"
     except:
-        print 'Invalid URL!'
-        flash("error")
-        return redirect(url_for('index'))
+        try:
+            soup = BeautifulSoup(urllib2.urlopen("https://" + long_url))
+            title = soup.title.string
+        except:
+            print 'Invalid URL!'
+            flash("error")
+            return redirect(url_for('index'))
+
+    print "Exists!"
 
     db_entry = UrlDB(long_url=long_url)
     db.session.add(db_entry)
@@ -62,8 +67,6 @@ def post_link():
     short_url = UrlHash.get_base_k(db_id)
     print 'short_url', short_url
 
-    # return redirect(url_for('display_result', link=short_url))
-    # data = {'long_url': long_url, 'short_url': short_url}
     data = {'long_url': long_url, 'title': title, 'short_url': app.domain + 'r/' + short_url}
     flash(json.dumps(data))
     return redirect(url_for('index'))

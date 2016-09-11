@@ -8,6 +8,8 @@
     <script src="{{ url_for('static', filename='jquery-3.1.0.min.js')}}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js')}}"></script>
 
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
 </head>
 <body>
 
@@ -36,6 +38,7 @@
     </nav>
 
     <style>
+
         .navbar {
             margin-bottom: 0;
             background-color: #f4511e;
@@ -60,19 +63,42 @@
             border-color: transparent;
             color: #fff !important;
         }
-    </style>
 
-    <style>
         .jumbotron {
+            min-height: 60%;
             background-color: #3B5998;
             color: #ffffff;
         }
+
+        .center {
+            float: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        body {
+            background-color: #f6f6f6;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .footer {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 1rem;
+            background-color: #efefef;
+            text-align: center;
+        }
+
     </style>
 
     <div class="jumbotron text-center">
 
-        <h1>Your URL Hub.</h1>
-        <p>Shorten, broadcast, analyze, repeat.</p>
+        <div class="container" style="padding-top: 5%">
+            <h1>Your URL Hub.</h1>
+            <p>Shorten, broadcast, analyze, repeat.</p>
+        </div>
 
         <form class="form-inline" method="post" action="post_link">
             <input class="form-control" name="long_link" size="50" type="text" placeholder="Paste any link here" width="300px">
@@ -81,6 +107,10 @@
 
     </div>
 
+    <div id="panel_group" class="panel-group center" style="width: 60%;">
+    </div>
+
+    <div class="footer">Powered by Twitter Bootstrap | Developed by Pushkar Lanka</div>
 
 {#    <div class="alert alert-danger">#}
 {#        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>#}
@@ -121,20 +151,48 @@
 
             console.log("SESSION DATA: " +  localStorage.getItem('session_data'));
             var data = JSON.parse(localStorage.getItem('session_data'));
-            if(data && data['body']) {
+            if(data && data['body'] && data['body'].length > 0) {
                 data = data['body'];
-                for(var i = 0; i < data.length; i++) {
-                    var short_url = data[i]['short_url'];
+                for(var i = data.length - 1; i >= 0; i--) {
+                    var item = data[i];
 
-                    var element = document.createElement('a');
-                    element.href = short_url;
-                    element.text = short_url;
-                    document.body.appendChild(element);
-                    document.body.appendChild(document.createElement('br'));
+                    var panel = document.createElement('div');
+                    panel.className = "panel panel-primary";
+
+                    var panel_heading = document.createElement('div');
+                    panel_heading.className = "panel-heading";
+                    panel_heading.textContent = item['title'];
+
+                    var panel_body = document.createElement('div');
+                    panel_body.className = "panel-body";
+                    var short_url = document.createElement('a');
+                    short_url.href = item['short_url'];
+                    short_url.text = item['short_url'];
+                    panel_body.appendChild(short_url);
+
+                    panel.appendChild(panel_heading);
+                    panel.appendChild(panel_body);
+                    document.getElementById("panel_group").appendChild(panel);
+
                 }
+            } else {
+                var div = document.createElement('div');
+                div.className = 'text-center';
+                div.style = 'padding-top: 10%'
+                var text = document.createElement('strong');
+                text.style = 'color: grey; font-size: 30px;';
+                text.textContent = "No links to show";
+                div.appendChild(text);
+                document.body.appendChild(div);
             }
         });
     </script>
+
+    {#TODO: Use AJAX to get URL info instead of refreshing page#}
+{#        <div class="panel panel-info">#}
+{#            <div class="panel-heading">Panel with panel-primary class</div>#}
+{#            <div class="panel-body">Panel Content</div>#}
+{#        </div>#}
 
 </body>
 </html>

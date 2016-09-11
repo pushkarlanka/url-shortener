@@ -40,20 +40,15 @@ def index():
 @app.route('/post_link', methods=['POST'])
 def post_link():
 
-    # TODO: Check that long_url is a valid URL
-
     long_url = request.form['long_link']
     long_url = long_url.strip("http://").strip("https://")
 
-    title = None
-
     try:
-        # ret = urllib2.urlopen('http://g.com')
         soup = BeautifulSoup(urllib2.urlopen("http://" + long_url))
         title = soup.title.string
         print "Exists!"
     except:
-        print 'Nope!'
+        print 'Invalid URL!'
         flash("error")
         return redirect(url_for('index'))
 

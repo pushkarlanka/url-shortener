@@ -32,8 +32,6 @@ class UrlDB(db.Model):
 @app.route('/')
 def index():
     # db.create_all()
-    # return redirect("http://www.google.com", code=302)
-    # return render_template('add_link.html', name=name)
     return render_template('add_link.html')
 
 
@@ -44,7 +42,6 @@ def post_link():
     # long_url = request.form['long_link']
     print long_url
     long_url = long_url.replace("http://", "").replace("https://", "").replace("www.", "")
-
     try:
         soup = BeautifulSoup(urllib2.urlopen("http://" + long_url))
         title = soup.title.string
@@ -54,8 +51,8 @@ def post_link():
             title = soup.title.string
         except:
             print 'Invalid URL!'
-            flash("error")
-            return redirect(url_for('index'))
+            data = {'status': 400}
+            return json.dumps(data)
 
     print "Exists!"
 
@@ -69,9 +66,12 @@ def post_link():
     short_url = UrlHash.get_base_k(db_id)
     print 'short_url', short_url
 
-    data = {'long_url': long_url, 'title': title, 'short_url': app.domain + 'r/' + short_url}
-    # flash(json.dumps(data))
-    # return redirect(url_for('index'))
+    data = {
+        'status': 200,
+        'long_url': long_url,
+        'title': title,
+        'short_url': app.domain + 'r/' + short_url
+    }
 
     return json.dumps(data)
 

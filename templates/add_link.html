@@ -10,6 +10,8 @@
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
+    <script src="{{ url_for('static', filename='script.js') }}" type="text/javascript"></script>
+
 </head>
 <body>
 
@@ -105,50 +107,9 @@
             <input class="btn btn-primary" type="submit" value="SHORTEN" >
         </form>
 
-        <script type='text/javascript'>
-            /* attach a submit handler to the form */
-            $("#form").submit(function(event) {
-
-                /* stop form from submitting normally */
-                event.preventDefault();
-
-                /* get the action attribute from the <form action=""> element */
-                var $form = $( this ), url = $form.attr( 'action' );
-
-                data = { long_link: $('input[name="long_link"]').val() };
-
-                $.ajax({
-                    url : url,
-                    type: "POST",
-                    data: JSON.stringify(data, null, '\t'),
-                    contentType: 'application/json; charset=UTF-8',
-                    success: function(data, textStatus, jqXHR)
-                    {
-                        var obj = JSON.parse(data);
-                        console.log(obj['short_url']);
-                        console.log(obj['long_url']);
-                        console.log(obj['title']);
-
-                        //data - response from server
-                    },
-                    error: function (jqXHR, textStatus, errorThrown)
-                    {
-                        alert('failure!');
-                    }
-                });
-
-{#                $.getJSON(url, {#}
-{#                    a: $('input[name="long_link"]').val(),#}
-{#                }, function(data) {#}
-{#                    alert('success');#}
-{#                });#}
-                return false;
-            });
-        </script>
-
     </div>
 
-    <div id="panel_group" class="panel-group center" style="width: 60%;">
+    <div id="panel_group" class="panel-group center" style="width: 60%; padding-bottom: 50px">
     </div>
 
     <div class="footer">Powered by Twitter Bootstrap | Developed by Pushkar Lanka</div>
@@ -159,81 +120,6 @@
 {#    </div>#}
 
 {# bootsrap ends #}
-
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for m in messages %}
-                <script>
-
-                    if(('{{ m }}').localeCompare('error') == 0) {
-                        console.log('INVALID URL');
-                    } else {
-                        console.log("LOOK" + {{ m|tojson|safe }});
-                        // initialize local storage if NULL
-                        var data;
-                        if(localStorage.getItem('session_data') == null) {
-                            data = {'body': []};
-                        } else {
-                            data = JSON.parse(localStorage.getItem('session_data'));
-                        }
-
-                        data['body'].push(JSON.parse({{ m|tojson|safe }}));
-                        localStorage.setItem('session_data', JSON.stringify(data));
-                    }
-
-
-                </script>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    <script>
-        $(document).ready(function() {
-
-            console.log("SESSION DATA: " +  localStorage.getItem('session_data'));
-            var data = JSON.parse(localStorage.getItem('session_data'));
-            if(data && data['body'] && data['body'].length > 0) {
-                data = data['body'];
-                for(var i = data.length - 1; i >= 0; i--) {
-                    var item = data[i];
-
-                    var panel = document.createElement('div');
-                    panel.className = "panel panel-primary";
-
-                    var panel_heading = document.createElement('div');
-                    panel_heading.className = "panel-heading";
-                    panel_heading.textContent = item['title'];
-
-                    var panel_body = document.createElement('div');
-                    panel_body.className = "panel-body";
-                    var short_url = document.createElement('a');
-                    short_url.href = item['short_url'];
-                    short_url.text = item['short_url'];
-                    panel_body.appendChild(short_url);
-
-                    panel.appendChild(panel_heading);
-                    panel.appendChild(panel_body);
-                    document.getElementById("panel_group").appendChild(panel);
-
-                }
-            } else {
-                var div = document.createElement('div');
-                div.className = 'text-center';
-                div.style = 'padding-top: 10%';
-                var text = document.createElement('strong');
-                text.style = 'color: grey; font-size: 30px;';
-                text.textContent = "No links to show";
-                div.appendChild(text);
-                document.body.appendChild(div);
-            }
-        });
-    </script>
-
-    {#TODO: Use AJAX to get URL info instead of refreshing page#}
-{#        <div class="panel panel-info">#}
-{#            <div class="panel-heading">Panel with panel-primary class</div>#}
-{#            <div class="panel-body">Panel Content</div>#}
-{#        </div>#}
 
 </body>
 </html>

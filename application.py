@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 from flask import render_template, redirect, url_for, request, flash
@@ -40,7 +40,9 @@ def index():
 @app.route('/post_link', methods=['POST'])
 def post_link():
 
-    long_url = request.form['long_link']
+    long_url = request.json['long_link']
+    # long_url = request.form['long_link']
+    print long_url
     long_url = long_url.replace("http://", "").replace("https://", "").replace("www.", "")
 
     try:
@@ -68,8 +70,10 @@ def post_link():
     print 'short_url', short_url
 
     data = {'long_url': long_url, 'title': title, 'short_url': app.domain + 'r/' + short_url}
-    flash(json.dumps(data))
-    return redirect(url_for('index'))
+    # flash(json.dumps(data))
+    # return redirect(url_for('index'))
+
+    return json.dumps(data)
 
 
 @app.route('/result')

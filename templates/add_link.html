@@ -100,10 +100,51 @@
             <p>Shorten, broadcast, analyze, repeat.</p>
         </div>
 
-        <form class="form-inline" method="post" action="post_link">
+        <form id="form" class="form-inline" method="post" action="post_link">
             <input class="form-control" name="long_link" size="50" type="text" placeholder="Paste any link here" width="300px">
             <input class="btn btn-primary" type="submit" value="SHORTEN" >
         </form>
+
+        <script type='text/javascript'>
+            /* attach a submit handler to the form */
+            $("#form").submit(function(event) {
+
+                /* stop form from submitting normally */
+                event.preventDefault();
+
+                /* get the action attribute from the <form action=""> element */
+                var $form = $( this ), url = $form.attr( 'action' );
+
+                data = { long_link: $('input[name="long_link"]').val() };
+
+                $.ajax({
+                    url : url,
+                    type: "POST",
+                    data: JSON.stringify(data, null, '\t'),
+                    contentType: 'application/json; charset=UTF-8',
+                    success: function(data, textStatus, jqXHR)
+                    {
+                        var obj = JSON.parse(data);
+                        console.log(obj['short_url']);
+                        console.log(obj['long_url']);
+                        console.log(obj['title']);
+
+                        //data - response from server
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert('failure!');
+                    }
+                });
+
+{#                $.getJSON(url, {#}
+{#                    a: $('input[name="long_link"]').val(),#}
+{#                }, function(data) {#}
+{#                    alert('success');#}
+{#                });#}
+                return false;
+            });
+        </script>
 
     </div>
 
@@ -178,7 +219,7 @@
             } else {
                 var div = document.createElement('div');
                 div.className = 'text-center';
-                div.style = 'padding-top: 10%'
+                div.style = 'padding-top: 10%';
                 var text = document.createElement('strong');
                 text.style = 'color: grey; font-size: 30px;';
                 text.textContent = "No links to show";

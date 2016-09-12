@@ -71,7 +71,7 @@ function form_handler() {
                     console.log(obj['title']);
 
                     if(obj['status'] == 400) {
-                        alert('failure!');
+                        bs_alert("Looks like the URL is invalid. Please try again.");
                     } else {
                         console.log("LOOK" + data);
                         // initialize local storage if NULL
@@ -89,13 +89,18 @@ function form_handler() {
                 },
                 error: function()
                 {
-                    alert('failure!');
+                    bs_alert("Oops! Something went wrong. Please try again.");
                 }
             });
         }
 
         return false;
     });
+}
+
+function bs_alert(text) {
+    $('#alerts').html('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + 
+                            text + '</div>');
 }
 
 $(document).ready(function() {

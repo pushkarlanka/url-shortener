@@ -16,7 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config.get_db_url()
 db = SQLAlchemy(app)
 
 # defined by me
-app.domain = "http://localhost:5000/"
+app.domain = "wrek.biz"
 
 class UrlDB(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)

@@ -105,8 +105,15 @@
 
         <form id="form" class="form-inline" method="post" action="post_link">
             <input class="form-control" name="long_link" size="50" type="text" placeholder="Paste any link here" width="300px">
-            <input class="btn btn-primary" type="submit" value="SHORTEN" >
+            <input id="submit_btn" class="btn btn-primary" type="submit" value="SNIP" style="width: 90px" >
         </form>
+
+        <script>
+            $( "#form" ).submit(function() {
+                var btn = $("#submit_btn");
+                btn.val('Pending...');
+            });
+        </script>
 
     </div>
 

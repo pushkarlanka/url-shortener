@@ -47,7 +47,6 @@ function show_panels() {
 
 function form_handler() {
     $('#form').submit(function(event) {
-        console.log('I MADE IT');
         event.preventDefault();
 
         var $form = $( this ), target_url = $form.attr( 'action' );
@@ -65,10 +64,12 @@ function form_handler() {
                 contentType: 'application/json; charset=UTF-8',
                 success: function(data)
                 {
+                    document.getElementById("form").reset();
+                    document.getElementById("submit_btn").value = "SNIP";
                     var obj = JSON.parse(data);
-                    console.log(obj['short_url']);
-                    console.log(obj['long_url']);
-                    console.log(obj['title']);
+                    // console.log(obj['short_url']);
+                    // console.log(obj['long_url']);
+                    // console.log(obj['title']);
 
                     if(obj['status'] == 400) {
                         bs_alert("Looks like the URL is invalid. Please try again.");

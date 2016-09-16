@@ -57,33 +57,30 @@
     body {
         background-color: #f6f6f6;
         font-family: 'Montserrat', sans-serif;
+    }
 
+    .footer {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 1rem;
+{#        background-color: #efefef;#}
+        text-align: center;
 
-
-        margin:0;
-        padding:0;
-        height:100%;
+        font-family: 'Ubuntu', sans-serif;
+        background: #dbdbdb;
     }
 
 {#    .footer {#}
-{#        position: fixed;#}
-{#        right: 0;#}
-{#        bottom: 0;#}
-{#        left: 0;#}
-{#        padding: 1rem;#}
-{#        background-color: #efefef;#}
+{#        font-family: 'Ubuntu', sans-serif;#}
+{#        font-size: 30px;#}
 {#        text-align: center;#}
+{#        background: #dbdbdb;#}
+{#        padding-top: 10px;#}
+{#        padding-bottom: 20px;#}
+{##}
 {#    }#}
-
-    .footer {
-        font-family: 'Ubuntu', sans-serif;
-        font-size: 30px;
-        text-align: center;
-        background: #dbdbdb;
-        padding-top: 10px;
-        padding-bottom: 20px;
-
-    }
 
 </style>
 
@@ -134,18 +131,20 @@
     <div id="panel_group" class="panel-group center" style="width: 60%; padding-bottom: 50px"></div>
 
     <div class="footer" id="footer">
-        <span style="font-size: 25px">Developed by Pushkar Lanka</span><br>
-        <div style="padding-top: 10px">
-            <a href="http://flask.pocoo.org/">
-                <img src="http://flask.pocoo.org/static/badges/flask-powered.png" border="0" alt="Flask powered" title="Flask powered" style="height: 40px; width: 100px; margin-right: 10px">
-            </a>
+        <span style="font-size: 20px; margin-right: 10px">Developed by Pushkar Lanka</span>
+        <span style="font-size: 20px"> | </span>
+
+{#        <div style="padding-top: 10px">#}
+{#            <a href="http://flask.pocoo.org/">#}
+{#                <img src="http://flask.pocoo.org/static/badges/flask-powered.png" border="0" alt="Flask powered" title="Flask powered" style="height: 40px; width: 100px; margin-right: 10px">#}
+{#            </a>#}
             <a href="https://github.com/pushkarlanka/url-shortener">
-                <img src="{{ url_for('static', filename='raw/GitHub-Mark-120px-plus.png') }}" style="height: 30px; width: 30px; margin-right: 10px">
+                <img src="{{ url_for('static', filename='raw/GitHub-Mark-120px-plus.png') }}" style="height: 25px; width: 25px; margin-left: 10px; margin-right: 15px; margin-bottom: 7px">
             </a>
             <a href="https://linkedin.com/in/pushkarlanka">
-                <img src="{{ url_for('static', filename='raw/linkedin-solid.png') }}" style="height: 30px; width: 30px">
+                <img src="{{ url_for('static', filename='raw/linkedin-solid.png') }}" style="height: 25px; width: 25px; margin-bottom: 7px">
             </a>
-        </div>
+{#        </div>#}
 
     </div>
 

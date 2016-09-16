@@ -7,10 +7,11 @@ function show_panels() {
     $("#panel_group").empty();
     $("#no_links").remove();
 
-    console.log("SESSION DATA: " +  localStorage.getItem('session_data'));
+    // console.log("SESSION DATA: " +  localStorage.getItem('session_data'));
     var data = JSON.parse(localStorage.getItem('session_data'));
     if(data && data['body'] && data['body'].length > 0) {
         data = data['body'];
+        var count = 0;
         for(var i = data.length - 1; i >= 0; i--) {
             var item = data[i];
 
@@ -31,6 +32,10 @@ function show_panels() {
             panel.appendChild(panel_heading);
             panel.appendChild(panel_body);
             document.getElementById("panel_group").appendChild(panel);
+            count++;
+            if(count == 7) {
+                return;
+            }
         }
     } else {
         var div = document.createElement('div');
@@ -41,7 +46,8 @@ function show_panels() {
         text.style = 'color: grey; font-size: 30px;';
         text.textContent = "No links to show";
         div.appendChild(text);
-        document.body.appendChild(div);
+        // document.body.appendChild(div);
+        document.getElementById("panel_group").appendChild(div);
     }
 }
 
@@ -55,7 +61,12 @@ function form_handler() {
 
         if(query.length > 0) {
 
-            data = { long_link: query };
+            var data = { long_link: query };
+
+            $( "#form" ).submit(function() {
+                var btn = $("#submit_btn");
+                btn.val('Pending...');
+            });
 
             $.ajax( {
                 url : target_url,
@@ -90,6 +101,8 @@ function form_handler() {
                 },
                 error: function()
                 {
+                    document.getElementById("form").reset();
+                    document.getElementById("submit_btn").value = "SNIP";
                     bs_alert("Oops! Something went wrong. Please try again.");
                 }
             });
